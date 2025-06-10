@@ -1,0 +1,76 @@
+/* Reset CSS moderno */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Eliminar márgenes y padding predeterminados */
+body, h1, h2, h3, h4, h5, h6, p, figure, blockquote, dl, dd {
+    margin: 0;
+}
+
+/* Establecer valores base */
+html {
+    line-height: 1.15;
+    -webkit-text-size-adjust: 100%;
+}
+
+/* Eliminar estilos de lista */
+ul, ol {
+    list-style: none;
+}
+
+/* Eliminar decoración de enlaces */
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Hacer que las imágenes sean responsivas */
+img, picture, video, canvas, svg {
+    display: block;
+    max-width: 100%;
+}
+
+/* Eliminar estilos de formularios */
+input, button, textarea, select {
+    font: inherit;
+    color: inherit;
+    border: none;
+    background: none;
+}
+
+/* Eliminar estilos de botones */
+button {
+    cursor: pointer;
+    border: none;
+    background: none;
+    padding: 0;
+}
+
+/* Eliminar estilos de tablas */
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+/* Eliminar estilos de citas */
+blockquote, q {
+    quotes: none;
+}
+
+/* Eliminar estilos de código */
+pre, code {
+    font-family: monospace;
+}
+
+/* Eliminar estilos de detalles */
+details {
+    display: block;
+}
+
+/* Eliminar estilos de summary */
+summary {
+    display: list-item;
+} 
