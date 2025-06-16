@@ -126,6 +126,8 @@ html {
     font-family: var(--font-family);
     color: var(--color-text);
     background-color: var(--color-background);
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px; /* Ajuste para el header fijo */
 }
 
 body {
@@ -133,6 +135,10 @@ body {
     padding: 0;
     min-height: 100vh;
     background-color: var(--color-background);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.5;
+    color: var(--color-text);
+    overflow-x: hidden;
 }
 
 /* Estilos de texto */
@@ -445,4 +451,50 @@ a.link-underline:hover::after {
 /* Utilidades de transición */
 .transition-fast { transition: all var(--transition-fast); }
 .transition-normal { transition: all var(--transition-normal); }
-.transition-slow { transition: all var(--transition-slow); } 
+.transition-slow { transition: all var(--transition-slow); }
+
+/* Ajustes para los enlaces de navegación */
+.header__menu a,
+.mobile-nav-item {
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.header__menu a::after,
+.mobile-nav-item::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--color-primary);
+    transition: width 0.3s ease;
+}
+
+.header__menu a:hover::after,
+.mobile-nav-item:hover::after {
+    width: 100%;
+}
+
+/* Ajuste para el menú móvil */
+.mobile-bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background-color: var(--color-white);
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+}
+
+/* Ajuste para el header fijo */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background-color: var(--color-white);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+} 

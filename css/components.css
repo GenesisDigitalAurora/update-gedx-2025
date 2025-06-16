@@ -1340,7 +1340,7 @@
     background-image: url('../images/backgrounds/GEDX-contact.png');
     background-position: top left;
     background-repeat: no-repeat;
-    margin: 1rem auto 0 auto;
+    margin: 0 auto;
     width: 100%;
     position: relative;
     z-index: 5;
@@ -1430,16 +1430,13 @@
     gap: 1.2rem;
 }
 .contacto__form p{
-    font-size: 1.2rem;
     color: var(--color-black);
-    font-weight: 400;
-    padding: 0;
-    margin: 0;
-}
-.contacto__form p b{
     font-size: 1.2rem;
-    color: var(--color-black);
-    font-weight: 700;
+    text-transform: uppercase;
+    padding: 10px 0;
+    font-weight: lighter;
+    text-align: left;
+    letter-spacing: 0.2rem;
 }
 .contacto__form input,
 .contacto__form textarea {
