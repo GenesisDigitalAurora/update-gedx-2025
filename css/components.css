@@ -168,14 +168,14 @@
 }
 
 /* Botón de contacto */
-.btn-special-menu {
+a.btn-special-menu {
     border: 2px solid var(--color-white);
     background-color: var(--color-red-01);
     color: var(--color-white);
     padding: 12px 24px;
 }
 
-.btn-special-menu::before, .btn-special-menu::after{
+a.btn-special-menu::before, a.btn-special-menu::after{
     content: '';
     position: absolute;
     left: -5px;
@@ -189,7 +189,7 @@
     rotate: -180deg;
 }
 
-.btn-special-menu::after {
+a.btn-special-menu::after {
     right: -5px;
     top: 9%;
     rotate: -0deg;
