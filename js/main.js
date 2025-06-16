@@ -204,3 +204,66 @@ function initParallaxEffect() {
         slide.addEventListener('mouseleave', resetPosition);
     });
 }
+
+// Control del menú de seguimiento
+const scrollNav = document.querySelector('.scroll-nav');
+const scrollNavItems = document.querySelectorAll('.scroll-nav__item');
+let lastScrollTop = 0;
+const headerHeight = document.querySelector('.header').offsetHeight;
+
+// Función para mostrar/ocultar el menú de seguimiento
+function toggleScrollNav() {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    
+    // Mostrar el menú cuando el header está fuera de vista
+    if (scrollTop > headerHeight) {
+        scrollNav.classList.add('visible');
+    } else {
+        scrollNav.classList.remove('visible');
+    }
+    
+    // Actualizar el ítem activo
+    updateActiveNavItem();
+    
+    lastScrollTop = scrollTop;
+}
+
+// Función para actualizar el ítem activo
+function updateActiveNavItem() {
+    const sections = document.querySelectorAll('section[id]');
+    const scrollPosition = window.pageYOffset + headerHeight + 100;
+
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.offsetHeight;
+        const sectionId = section.getAttribute('id');
+        
+        if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+            scrollNavItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('data-section') === sectionId) {
+                    item.classList.add('active');
+                }
+            });
+        }
+    });
+}
+
+// Event listeners
+window.addEventListener('scroll', toggleScrollNav);
+window.addEventListener('load', toggleScrollNav);
+
+// Smooth scroll para los enlaces del menú de seguimiento
+scrollNavItems.forEach(item => {
+    item.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetId = item.getAttribute('href');
+        const targetSection = document.querySelector(targetId);
+        const targetPosition = targetSection.offsetTop - headerHeight;
+        
+        window.scrollTo({
+            top: targetPosition,
+            behavior: 'smooth'
+        });
+    });
+});
