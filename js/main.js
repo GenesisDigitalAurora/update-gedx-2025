@@ -54,6 +54,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Función para crear rombos dinámicos
 function createDiamonds() {
+    // Verificar si es dispositivo móvil
+    if (window.innerWidth <= 768) {
+        return;
+    }
+
     const background = document.getElementById('techBackground');
     const numberOfLargeDiamonds = 6; // Reducido de 8
     const numberOfSmallDiamonds = 10; // Reducido de 15
@@ -124,21 +129,34 @@ function createDiamonds() {
     }
 }
 
-// Crear rombos iniciales
-createDiamonds();
+// Crear rombos iniciales solo si no es móvil
+if (window.innerWidth > 768) {
+    createDiamonds();
+}
 
 // Optimizar el evento resize usando debounce
 let resizeTimeout;
 window.addEventListener('resize', () => {
     clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(createDiamonds, 250);
+    resizeTimeout = setTimeout(() => {
+        if (window.innerWidth > 768) {
+            createDiamonds();
+        }
+    }, 250);
 });
 
-// Recrear rombos cada 15 segundos
-setInterval(createDiamonds, 15000);
+// Recrear rombos cada 15 segundos solo si no es móvil
+if (window.innerWidth > 768) {
+    setInterval(createDiamonds, 15000);
+}
 
 // Función para el efecto parallax
 function initParallaxEffect() {
+    // Verificar si es dispositivo móvil
+    if (window.innerWidth <= 768) {
+        return;
+    }
+
     const slides = document.querySelectorAll('.slide.active');
     
     slides.forEach(slide => {
@@ -199,11 +217,28 @@ function initParallaxEffect() {
             });
         }
 
-        // Agregar event listeners
-        slide.addEventListener('mousemove', handleMouseMove);
-        slide.addEventListener('mouseleave', resetPosition);
+        // Agregar event listeners solo si no es móvil
+        if (window.innerWidth > 768) {
+            slide.addEventListener('mousemove', handleMouseMove);
+            slide.addEventListener('mouseleave', resetPosition);
+        }
     });
 }
+
+// Agregar event listener para resize
+window.addEventListener('resize', () => {
+    if (window.innerWidth <= 768) {
+        // Remover event listeners de parallax en móvil
+        const slides = document.querySelectorAll('.slide');
+        slides.forEach(slide => {
+            slide.removeEventListener('mousemove', handleMouseMove);
+            slide.removeEventListener('mouseleave', resetPosition);
+        });
+    } else {
+        // Reinicializar parallax en desktop
+        initParallaxEffect();
+    }
+});
 
 // Control del menú de seguimiento
 const scrollNav = document.querySelector('.scroll-nav');
@@ -213,6 +248,12 @@ const headerHeight = document.querySelector('.header').offsetHeight;
 
 // Función para mostrar/ocultar el menú de seguimiento
 function toggleScrollNav() {
+    // Verificar si es dispositivo móvil
+    if (window.innerWidth <= 768) {
+        scrollNav.classList.remove('visible');
+        return;
+    }
+
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     
     // Mostrar el menú cuando el header está fuera de vista
@@ -252,6 +293,14 @@ function updateActiveNavItem() {
 // Event listeners
 window.addEventListener('scroll', toggleScrollNav);
 window.addEventListener('load', toggleScrollNav);
+window.addEventListener('resize', () => {
+    // Verificar si es dispositivo móvil
+    if (window.innerWidth <= 768) {
+        scrollNav.classList.remove('visible');
+    } else {
+        toggleScrollNav();
+    }
+});
 
 // Smooth scroll para los enlaces del menú de seguimiento
 scrollNavItems.forEach(item => {
@@ -267,3 +316,4 @@ scrollNavItems.forEach(item => {
         });
     });
 });
+
