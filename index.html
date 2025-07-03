@@ -422,10 +422,10 @@
                 </div>
                 <form id="contacto" class="contacto__form">
                     <p>Lo que sigue en tu proyecto puede marcar la diferencia.</p>
-                    <input type="text" placeholder="Nombre" required>
-                    <input type="tel" placeholder="Teléfono o celular" required>
-                    <input type="email" placeholder="Correo electrónico" required>
-                    <textarea placeholder="¿En qué te podemos ayudar?" required></textarea>
+                    <input type="text" name="nombre" placeholder="Nombre" required maxlength="50">
+                    <input type="tel" name="telefono" placeholder="Teléfono o celular" required maxlength="15">
+                    <input type="email" name="email" placeholder="Correo electrónico" required maxlength="100">
+                    <textarea name="mensaje" placeholder="¿En qué te podemos ayudar?" required maxlength="1000"></textarea>
                     <button type="submit">Enviar mensaje</button>
                 </form>
             </div>

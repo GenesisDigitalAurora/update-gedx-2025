@@ -317,3 +317,211 @@ scrollNavItems.forEach(item => {
     });
 });
 
+// Sanitización del formulario de contacto
+function sanitizeForm() {
+    const form = document.getElementById('contacto');
+    
+    if (!form) return;
+
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        // Obtener los valores del formulario
+        const nombre = form.querySelector('input[name="nombre"]').value.trim();
+        const telefono = form.querySelector('input[name="telefono"]').value.trim();
+        const email = form.querySelector('input[name="email"]').value.trim();
+        const mensaje = form.querySelector('textarea[name="mensaje"]').value.trim();
+        
+        // Sanitización básica
+        const sanitizeText = (text) => {
+            return text
+                .replace(/[<>]/g, '') // Remover < y >
+                .replace(/javascript:/gi, '') // Remover javascript:
+                .replace(/on\w+=/gi, '') // Remover event handlers
+                .substring(0, 1000); // Limitar longitud
+        };
+        
+        const sanitizeEmail = (email) => {
+            return email
+                .replace(/[<>]/g, '')
+                .replace(/javascript:/gi, '')
+                .toLowerCase()
+                .trim();
+        };
+        
+        // Aplicar sanitización
+        const cleanNombre = sanitizeText(nombre);
+        const cleanTelefono = sanitizeText(telefono);
+        const cleanEmail = sanitizeEmail(email);
+        const cleanMensaje = sanitizeText(mensaje);
+        
+        // Validación básica
+        if (!cleanNombre || !cleanTelefono || !cleanEmail || !cleanMensaje) {
+            alert('Por favor completa todos los campos');
+            return;
+        }
+        
+        if (cleanNombre.length < 2) {
+            alert('El nombre debe tener al menos 2 caracteres');
+            return;
+        }
+        
+        if (cleanTelefono.length < 8) {
+            alert('El teléfono debe tener al menos 8 dígitos');
+            return;
+        }
+        
+        if (!cleanEmail.includes('@') || !cleanEmail.includes('.')) {
+            alert('Por favor ingresa un email válido');
+            return;
+        }
+        
+        // Mostrar spinner y ocultar formulario
+        showSpinner();
+        
+        try {
+            // Datos a enviar
+            const formData = {
+                nombre: cleanNombre,
+                telefono: cleanTelefono,
+                email: cleanEmail,
+                mensaje: cleanMensaje
+            };
+            
+            // Enviar datos por POST
+            const response = await fetch('https://tu-servicio-api.com/contacto', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            });
+            
+            // Ocultar spinner
+            hideSpinner();
+            
+            if (response.ok) {
+                // Mostrar mensaje de éxito
+                showSuccessMessage();
+            } else {
+                // Mostrar mensaje de error
+                showErrorMessage();
+            }
+            
+        } catch (error) {
+            console.error('Error al enviar formulario:', error);
+            hideSpinner();
+            showErrorMessage();
+        }
+    });
+}
+
+// Función para mostrar spinner
+function showSpinner() {
+    const form = document.getElementById('contacto');
+    const formContainer = form.parentElement;
+    
+    // Crear spinner
+    const spinnerHTML = `
+        <div class="form-spinner" style="text-align: center; padding: 2rem;">
+            <div class="spinner" style="
+                width: 50px;
+                height: 50px;
+                border: 4px solid #f3f3f3;
+                border-top: 4px solid var(--color-primary);
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+                margin: 0 auto 1rem;
+            "></div>
+            <p style="color: var(--color-primary); font-size: 1.2rem; margin: 0;">Enviando...</p>
+        </div>
+    `;
+    
+    // Ocultar formulario y mostrar spinner
+    form.style.display = 'none';
+    formContainer.insertAdjacentHTML('beforeend', spinnerHTML);
+    
+    // Agregar estilos de animación
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+// Función para ocultar spinner
+function hideSpinner() {
+    const spinner = document.querySelector('.form-spinner');
+    if (spinner) {
+        spinner.remove();
+    }
+}
+
+// Función para mostrar mensaje de éxito
+function showSuccessMessage() {
+    const form = document.getElementById('contacto');
+    const formContainer = form.parentElement;
+    
+    const successHTML = `
+        <div class="form-success" style="
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            border-radius: 10px;
+            margin-top: 1rem;
+        ">
+            <i class="fas fa-check-circle" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+            <h3 style="margin: 0 0 1rem 0; font-size: 1.5rem;">¡Gracias por contactarnos!</h3>
+            <p style="margin: 0; font-size: 1.1rem; line-height: 1.5;">
+                Hemos recibido tu mensaje correctamente. Un ejecutivo se pondrá en contacto contigo inmediatamente.
+            </p>
+        </div>
+    `;
+    
+    formContainer.insertAdjacentHTML('beforeend', successHTML);
+}
+
+// Función para mostrar mensaje de error
+function showErrorMessage() {
+    const form = document.getElementById('contacto');
+    const formContainer = form.parentElement;
+    
+    const errorHTML = `
+        <div class="form-error" style="
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, #f44336, #d32f2f);
+            color: white;
+            border-radius: 10px;
+            margin-top: 1rem;
+        ">
+            <i class="fas fa-exclamation-triangle" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+            <h3 style="margin: 0 0 1rem 0; font-size: 1.5rem;">Error al enviar</h3>
+            <p style="margin: 0; font-size: 1.1rem; line-height: 1.5;">
+                Hubo un problema al enviar tu mensaje. Por favor, intenta nuevamente o contáctanos directamente.
+            </p>
+            <button onclick="location.reload()" style="
+                margin-top: 1rem;
+                padding: 0.5rem 1rem;
+                background: white;
+                color: #f44336;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-weight: bold;
+            ">Intentar nuevamente</button>
+        </div>
+    `;
+    
+    formContainer.insertAdjacentHTML('beforeend', errorHTML);
+}
+
+// Inicializar sanitización del formulario
+document.addEventListener('DOMContentLoaded', () => {
+    sanitizeForm();
+});
+
