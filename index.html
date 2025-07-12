@@ -9,6 +9,8 @@
     <link rel="apple-touch-icon" href="images/icons/favicon.png">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google reCAPTCHA -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <!-- Estilos -->
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/global.css">
@@ -423,10 +425,11 @@
                 <div class="contacto__form-container">
                     <form id="contacto" class="contacto__form">
                         <p>Lo que sigue en tu proyecto puede marcar la diferencia.</p>
-                        <input type="text" name="nombre" placeholder="Nombre" required maxlength="50">
-                        <input type="tel" name="telefono" placeholder="Teléfono o celular" required maxlength="15">
+                        <input type="text" name="name" placeholder="Nombre" required maxlength="50">
+                        <input type="tel" name="phone" placeholder="Teléfono o celular" required maxlength="15">
                         <input type="email" name="email" placeholder="Correo electrónico" required maxlength="100">
-                        <textarea name="mensaje" placeholder="¿En qué te podemos ayudar?" required maxlength="1000"></textarea>
+                        <textarea name="message" placeholder="¿En qué te podemos ayudar?" required maxlength="1000"></textarea>
+                        <div class="g-recaptcha" data-sitekey="6LfKlSErAAAAALm_UbqGspYMGdbjKeBcRDt3y-w_"></div>
                         <button type="submit">Enviar mensaje</button>
                     </form>
                 </div>

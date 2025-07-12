@@ -327,10 +327,10 @@ function sanitizeForm() {
         e.preventDefault();
         
         // Obtener los valores del formulario
-        const nombre = form.querySelector('input[name="nombre"]').value.trim();
-        const telefono = form.querySelector('input[name="telefono"]').value.trim();
+        const nombre = form.querySelector('input[name="name"]').value.trim();
+        const telefono = form.querySelector('input[name="phone"]').value.trim();
         const email = form.querySelector('input[name="email"]').value.trim();
-        const mensaje = form.querySelector('textarea[name="mensaje"]').value.trim();
+        const mensaje = form.querySelector('textarea[name="message"]').value.trim();
         
         // Sanitización básica
         const sanitizeText = (text) => {
@@ -376,23 +376,32 @@ function sanitizeForm() {
             return;
         }
         
+        // Verificar reCAPTCHA
+        const recaptchaResponse = grecaptcha.getResponse();
+        if (!recaptchaResponse) {
+            alert('Por favor completa la verificación reCAPTCHA');
+            return;
+        }
+        
         // Mostrar spinner y ocultar formulario
         showSpinner();
         
         try {
             // Datos a enviar
             const formData = {
-                nombre: cleanNombre,
-                telefono: cleanTelefono,
+                name: cleanNombre,
+                phone: cleanTelefono,
                 email: cleanEmail,
-                mensaje: cleanMensaje
+                message: cleanMensaje,
+                token: recaptchaResponse
             };
             
             // Enviar datos por POST
-            const response = await fetch('https://tu-servicio-api.com/contacto', {
+            const response = await fetch('https://yvqac3ai2d.execute-api.us-east-1.amazonaws.com/prod/contacto', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    origin: "https://gedx.com.mx",
                 },
                 body: JSON.stringify(formData)
             });
@@ -406,12 +415,16 @@ function sanitizeForm() {
             } else {
                 // Mostrar mensaje de error
                 showErrorMessage();
+                // Resetear reCAPTCHA para permitir otro intento
+                grecaptcha.reset();
             }
             
         } catch (error) {
             console.error('Error al enviar formulario:', error);
             hideSpinner();
             showErrorMessage();
+            // Resetear reCAPTCHA para permitir otro intento
+            grecaptcha.reset();
         }
     });
 }

@@ -1303,6 +1303,30 @@ a.btn-special-menu::after {
     color: #fff;
 }
 
+/* Estilos para reCAPTCHA */
+.g-recaptcha {
+    margin: 1rem 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: scale(0.95);
+    transform-origin: center;
+}
+
+@media (max-width: 768px) {
+    .g-recaptcha {
+        transform: scale(0.8);
+        margin: 0.5rem 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .g-recaptcha {
+        transform: scale(0.7);
+        margin: 0.25rem 0;
+    }
+}
+
 /* Footer */
 .footer {
     background: #000;
