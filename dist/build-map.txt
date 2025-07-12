@@ -1,0 +1,8 @@
+﻿# GEDX Build Map - 2025-07-12 00:11:02
+# Mapeo de archivos originales a archivos con hash
+
+css/reset.css -> dist/reset.f9078892.min.css
+css/components.css -> dist/components.a5b382be.min.css
+css/global.css -> dist/global.e0e68581.min.css
+js/main.js -> dist/main.ac01a596.min.js
+
