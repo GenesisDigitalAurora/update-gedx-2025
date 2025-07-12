@@ -438,7 +438,6 @@ function showSpinner() {
     `;
     
     // Ocultar formulario y mostrar spinner
-    form.style.display = 'none';
     formContainer.insertAdjacentHTML('beforeend', spinnerHTML);
     
     // Agregar estilos de animación
@@ -488,7 +487,7 @@ function showSuccessMessage() {
 // Función para mostrar mensaje de error
 function showErrorMessage() {
     const form = document.getElementById('contacto');
-    const formContainer = form.parentElement;
+    const formContainer = form.parentElement; // Aseguramos que el contenedor sea el padre del formulario
     
     const errorHTML = `
         <div class="form-error" style="
@@ -501,7 +500,7 @@ function showErrorMessage() {
         ">
             <i class="fas fa-exclamation-triangle" style="font-size: 3rem; margin-bottom: 1rem;"></i>
             <h3 style="margin: 0 0 1rem 0; font-size: 1.5rem;">Error al enviar</h3>
-            <p style="margin: 0; font-size: 1.1rem; line-height: 1.5;">
+            <p style="margin: 0; text-align: center; font-size: 1.1rem; line-height: 1.5; color: white;">
                 Hubo un problema al enviar tu mensaje. Por favor, intenta nuevamente o contáctanos directamente.
             </p>
             <button onclick="location.reload()" style="
@@ -517,7 +516,8 @@ function showErrorMessage() {
         </div>
     `;
     
-    formContainer.insertAdjacentHTML('beforeend', errorHTML);
+
+    form.insertAdjacentHTML('beforeend', errorHTML); // Aseguramos que el formulario sea el padre del mensaje de error
 }
 
 // Inicializar sanitización del formulario

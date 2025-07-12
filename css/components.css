@@ -1247,13 +1247,18 @@ a.btn-special-menu::after {
     font-weight: 400;
 }
 
-.contacto__form {
+.contacto__form-container{
     flex: 1 1 400px;
     min-width: 320px;
+}
+
+.contacto__form{
     display: flex;
     flex-direction: column;
     gap: 1.2rem;
+    width: 100%;
 }
+
 .contacto__form p{
     color: var(--color-black);
     font-size: 1.2rem;
