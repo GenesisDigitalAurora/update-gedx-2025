@@ -304,6 +304,16 @@ function Deploy-ToS3 {
     Copy-Item "images" "$deployDir/" -Recurse -Force
     Copy-Item "dist" "$deployDir/" -Recurse -Force
     
+    # Copiar imágenes de la raíz (png, jpg, jpeg, svg, ico, webp)
+    $rootImages = Get-ChildItem -Path "." -File | Where-Object { $_.Extension -match '\.(png|jpg|jpeg|svg|ico|webp)$' }
+    if ($rootImages.Count -gt 0) {
+        Write-Output "Copiando imagenes de la raiz: $($rootImages.Count) archivos"
+        foreach ($img in $rootImages) {
+            Copy-Item $img.FullName "$deployDir/" -Force
+            Write-Output "  • $($img.Name)"
+        }
+    }
+    
     # Copiar archivos CSS y JS originales (por si se necesitan para debugging)
     New-Item -ItemType Directory -Path "$deployDir/css" -Force | Out-Null
     New-Item -ItemType Directory -Path "$deployDir/js" -Force | Out-Null
@@ -338,8 +348,18 @@ function Deploy-ToS3 {
     aws s3 sync "$deployDir/dist" "s3://$bucketName/dist" --cache-control "max-age=31536000" --expires "2026-12-31T23:59:59Z"
     
     # Subir imágenes con cache largo
-    Write-Output "Subiendo imagenes..."
+    Write-Output "Subiendo imagenes de la carpeta images..."
     aws s3 sync "$deployDir/images" "s3://$bucketName/images" --cache-control "max-age=2592000"
+    
+    # Subir imágenes de la raíz con cache largo
+    $rootImageFiles = Get-ChildItem "$deployDir" -File | Where-Object { $_.Extension -match '\.(png|jpg|jpeg|svg|ico|webp)$' }
+    if ($rootImageFiles.Count -gt 0) {
+        Write-Output "Subiendo imagenes de la raiz..."
+        foreach ($img in $rootImageFiles) {
+            aws s3 cp "$($img.FullName)" "s3://$bucketName/$($img.Name)" --cache-control "max-age=2592000"
+            Write-Output "  • $($img.Name) subido"
+        }
+    }
     
     # Subir CSS y JS originales con cache medio
     Write-Output "Subiendo CSS/JS originales..."
@@ -374,7 +394,8 @@ function Deploy-ToS3 {
     Write-Output "`nEstadisticas del deploy:"
     Write-Output "• Archivos HTML: Con cache corto (5 minutos)"
     Write-Output "• Archivos minificados: Con cache largo (1 año)"
-    Write-Output "• Imagenes: Con cache medio (30 dias)"
+    Write-Output "• Imagenes (carpeta images): Con cache medio (30 dias)"
+    Write-Output "• Imagenes (raiz): Con cache medio (30 dias)"
     Write-Output "• CSS/JS originales: Con cache diario"
     if ($cloudfrontDistributionId) {
         Write-Output "• CloudFront: Invalidacion iniciada"
